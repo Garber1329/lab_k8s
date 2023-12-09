@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vitalii-db
+spec:
+  selector:
+    app: vitalii-db
+  ports:
+    - port: 3306
+      targetPort: 3306
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vitalii-db
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: vitalii-db
+  template:
+    metadata:
+      labels:
+        app: vitalii-db
+    spec:
+      containers:
+        - name: app
+          image: garber1329/db-lab5:latest
+          env: 
+            - name: MYSQL_ROOT_PASSWORD 
+              value: “1234567890”
+          ports:
+            - containerPort: 3306
+          imagePullPolicy: Always
